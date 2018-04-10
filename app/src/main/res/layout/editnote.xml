@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View"/>
+       <import type="leon.longnote.convertor.DateConverter"/>
+        <import type="leon.longnote.model.ResourceType"/>
+        <variable
+            name="noteItemViewMode"
+            type="leon.longnote.viewmodel.NoteItemViewModel" />
+
+        <variable
+            name="sdf"
+            type="java.text.SimpleDateFormat" />
+        <variable
+            name="presenter"
+            type="leon.longnote.presenter.EditNotePresenter" />
+
+
+    </data>
+
+    <LinearLayout
+        android:id="@+id/mylayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/titlelayout"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/editnote_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingRight="10dp"
+                android:onClick="@{()->presenter.onCancelClicked()}"
+                android:src="@drawable/note_create_cancel" />
+
+            <TextView
+                android:id="@+id/editnote_title"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.0"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="30dp"
+                android:text="@{noteItemViewMode.isNew?@string/newnote:@string/editnote}"
+                android:textColor="#ffffff"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/editnote_save"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingRight="10dp"
+                android:onClick="@{()->presenter.onSaveClicked()}"
+                android:src="@drawable/note_create_save" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#cecece" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.0"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/scrolllayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/datePicker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:alpha="0.54"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:textColor="#000000"
+                        android:text="@{sdf.format(noteItemViewMode.isNew?noteItemViewMode.currentDate:noteItemViewMode.item==null?noteItemViewMode.currentDate:noteItemViewMode.item.date)}"/>
+
+                    <TextView
+                        android:id="@+id/timePicker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:alpha="0.54"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:textColor="#000000" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#cecece" />
+
+                <EditText
+                    android:id="@+id/edit_note"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@null"
+                    android:cursorVisible="true"
+                    android:gravity="top"
+                    android:hint="@string/editnoteplease"
+                    android:text="@={presenter.textContent}"
+                    app:cursorVisibleOrGone="@{presenter.showOrHideEditTextCursor}"
+                    android:minHeight="50dp"
+                    android:textColorHint="#cecece" />
+
+                <LinearLayout
+                    android:id="@+id/voicelayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/voice_button_layoutbg"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    app:visibleOrGone="@{presenter.showOrHideVoiceLayout}"
+                    android:onClick="@{()-> presenter.onAudioClicked()}"
+                    android:longClickable="true"
+                    android:onLongClick="@{()-> presenter.onAudioLongClicked()}"
+
+                    >
+                    <!--
+                    android:onLongClick="@{()-> presenter.onAudioLongClicked(noteItemViewMode.item.get())}"
+                   -->
+                    <ImageView
+                        android:id="@+id/voice1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:background="@{presenter.voiceStatusIcon1}"
+                         />
+                    <!---->
+
+                    <TextView
+                        android:id="@+id/voice_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="15dp"
+                        android:textColor="#ffffff"
+                        android:text="@{presenter.voiceDuration}"
+                        android:textSize="12sp" />
+                    <!---->
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_imgs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="fill_vertical"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:id="@+id/ll_img1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        app:imageBitmap="@{presenter.image1Byte}"
+                        android:onLongClick="@{(thisView)-> presenter.onImageLongClicked(thisView)}"
+                        app:visibleOrGone="@{presenter.showOrHideImage1}"/>
+                    <ImageView
+                        android:id="@+id/ll_img2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        app:imageBitmap="@{presenter.image2Byte}"
+                        android:onLongClick="@{(thisView)-> presenter.onImageLongClicked(thisView)}"
+                        app:visibleOrGone="@{presenter.showOrHideImage2}"/>
+                    <ImageView
+                        android:id="@+id/ll_img3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        app:imageBitmap="@{presenter.image3Byte}"
+                        android:onLongClick="@{(thisView)-> presenter.onImageLongClicked(thisView)}"
+                        app:visibleOrGone="@{presenter.showOrHideImage3}"/>
+                    <ImageView
+                        android:id="@+id/ll_img4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        app:imageBitmap="@{presenter.image4Byte}"
+                        android:onLongClick="@{(thisView)-> presenter.onImageLongClicked(thisView)}"
+                        app:visibleOrGone="@{presenter.showOrHideImage4}"/>
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/bottomimage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:src="@drawable/bottomshare"
+                    app:visibleOrGone="@{presenter.showOrHideShareLabel}"/>
+            </LinearLayout>
+        </ScrollView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#cecece" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/voice_note"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:padding="10dp"
+                app:touchListener="@{presenter}"
+                android:src="@drawable/toolbar_icon_voice" />
+
+            <ImageView
+                android:id="@+id/photo_note"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:padding="10dp"
+                android:onClick="@{()-> presenter.onCameraClick()}"
+                android:src="@drawable/toolbar_icon_photo" />
+
+            <ImageView
+                android:id="@+id/picture_note"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:padding="10dp"
+                android:onClick="@{()-> presenter.onPictureSelectClick()}"
+                android:src="@drawable/ic_photo_library_black_24dp" />
+
+            <ImageView
+                android:id="@+id/delete_note"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:padding="10dp"
+                android:src="@drawable/toolbar_icon_delete"
+                android:onClick="@{()-> presenter.onDeleteClick()}"
+                android:visibility="@{!noteItemViewMode.isNew()?View.VISIBLE:View.GONE}"/>
+
+            <ImageView
+                android:id="@+id/share_note"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:padding="10dp"
+                android:onClick="@{()-> presenter.onShareClick()}"
+                android:src="@drawable/ic_share_black_24dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>
