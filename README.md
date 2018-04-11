@@ -9,7 +9,7 @@ Implement note application, which using latest google android architecture &amp;
 
 2.add english string resource
 
-TODO: 
+TODO:
 
 1. Using LiveData replace mvvm databinding Observable
 
