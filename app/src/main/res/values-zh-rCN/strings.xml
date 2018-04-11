@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">上上便签</string>
+
+    <string name="action_settings">设置</string>
+    <string name="back_twice">再次点击返回键退出</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="newnote">新建记事</string>
+    <string name="editnote">编辑记事</string>
+    <string name="remindnote">没有添加不能保存哦！</string>
+    <string name="notesuccess">保存成功</string>
+    <string name="deletenotesuccess">删除成功</string>
+    <string name="notetitle">记事</string>
+    <string name="nonotes">One day,\nyou\'ll be just a memory for some people.\nDo your best to be a good one.\n终有一天，\n你会镌刻在他人的记忆里。\n尽你所能雕刻一段美好的回忆。</string>
+    <string name="isdeletevoice">是否删除该条语音?</string>
+    <string name="isdeletenote">是否删除本条记事？</string>
+    <string name="isdeletenotes">是否删除所选记事？</string>
+    <string name="isleave">是否离开当前记事？</string>
+    <string name="timelittle">时间太短   录音失败</string>
+    <string name="atleast5">最多上传五张图片，可点击删除已选择的图片！</string>
+    <string name="delpic">是否删除本张图片？</string>
+    <string name="nosave">确认不保存，退出编辑？</string>
+    <string name="editnoteplease">记录此刻的想法…</string>
+    <string name="addphoto">添加照片</string>
+    <string name="takephoto">拍照</string>
+    <string name="choosephoto">选择图片</string>
+    <string name="isvoice">录音中...</string>
+    <string name="isvoice_one">多次录音只保留最新一条</string>
+    <string name="cancle">取消</string>
+    <string name="confirm">确认</string>
+    <string name="voicenote">语音记事</string>
+    <string name="picnote">图片记事</string>
+    <string name="nomorenote">没有更多记事了哟</string>
+    <string name="thereisnovoice">记事使用语音的权限被禁止</string>
+    <string name="alreadyselect"> 已选择</string>
+    <string name="pleasechoosenotes">请选择要删除的记事</string>
+    <string name="default1">点击“＋”号新建记事，可以插入文字、图片和语音</string>
+    <string name="default2">编辑界面长按语音或图片进行删除</string>
+    <string name="default3">主界面中长按单条记事，可多选删除</string>
+    <string name="festival_share_task">生成图片中!!!</string>
+    <string name="share_wrong">世界上最遥远的距离就是没有网络！</string>
+    <string name="nopictures">图片不存在或已损坏（缓存图片）！</string>
+    <!--actionmode begin-->
+    <string name="leac_select_all">全部选择</string>
+    <string name="leac_deselect_all">取消选择</string>
+</resources>
