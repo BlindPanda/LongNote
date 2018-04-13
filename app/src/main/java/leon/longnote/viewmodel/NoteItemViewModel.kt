@@ -19,17 +19,17 @@ import java.sql.Date
 class NoteItemViewModel(application: Application, private val repository: DataRepository,
                         mProductId: Int) : AndroidViewModel(application) {
 
-    private val mObservableProduct: LiveData<NoteItem>
+    private val mObservableProduct: LiveData<NoteItem> = repository.loadNoteById(mProductId)
 
     var item = ObservableField<NoteItem>()
     var isNew = ObservableField<Boolean>(true)
     var currentDate = ObservableField<Date>(Date(System.currentTimeMillis()))
-    val observableNoteItem: LiveData<NoteItem>
-        get() = mObservableProduct
 
+    fun getObservableProduct():LiveData<NoteItem>{
+        return mObservableProduct
+    }
 
     init {
-        mObservableProduct = repository.loadNoteById(mProductId)
         if(mObservableProduct==null){
             Log.e("yanlonglong","query mObservableProduct is null")
         }else{
@@ -61,11 +61,7 @@ class NoteItemViewModel(application: Application, private val repository: DataRe
      */
     class Factory(private val mApplication: Application, private val mProductId: Int) : ViewModelProvider.NewInstanceFactory() {
 
-        private val mRepository: DataRepository
-
-        init {
-            mRepository = (mApplication as BasicApplication).getRepository()
-        }
+        private val mRepository: DataRepository = (mApplication as BasicApplication).getRepository()
 
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
 
