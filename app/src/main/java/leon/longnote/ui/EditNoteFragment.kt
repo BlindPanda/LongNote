@@ -49,8 +49,9 @@ class EditNoteFragment : Fragment() {
     }
 
     private fun subscribeToModel(viewModel: NoteItemViewModel) {
-        viewModel.observableNoteItem.observe(this, Observer<NoteItem> { noteEntitie ->
+        viewModel.getObservableProduct().observe(this, Observer<NoteItem> { noteEntitie ->
             Log.e("yanlonglong", "noteEntitie " + (noteEntitie == null))
+            //livedate发生了变化，ObservableField setNoteItem及时更新，它又绑定了xml view
             if (noteEntitie != null) {
                 viewModel.setNoteItem(noteEntitie)
                 mBinding.presenter.doInit(noteEntitie)
