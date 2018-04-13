@@ -15,7 +15,7 @@ interface NoteDbDao {
     @Query("DELETE FROM note_table WHERE id = :id")
     fun deleteById(id: Int)
 
-    @Query("SELECT * FROM note_table")
+    @Query("SELECT * FROM note_table ORDER BY date DESC")
     fun loadAllNoteItems(): LiveData<List<NoteItem>>
 
     @Query("SELECT * FROM note_table WHERE id = :note_id")
