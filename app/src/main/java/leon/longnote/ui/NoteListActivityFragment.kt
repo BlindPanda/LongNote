@@ -2,11 +2,9 @@ package leon.longnote.ui
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.*
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +13,6 @@ import leon.longnote.R
 import leon.longnote.databinding.FragmentNoteListBinding
 import leon.longnote.model.NoteItem
 import leon.longnote.ui.acitonmode.NoteListActionMode
-import leon.longnote.utils.CommonUtils
 import leon.longnote.viewmodel.NoteItemListViewModel
 
 class NoteListActivityFragment : Fragment(),NoteItemClickInterface {
@@ -48,7 +45,6 @@ class NoteListActivityFragment : Fragment(),NoteItemClickInterface {
         mBinding.fab.setOnClickListener { view ->
             (activity as NoteListActivity).show(null)
         }
-        registerSlideDeleteListener()
         return mBinding.root
     }
 
@@ -57,46 +53,12 @@ class NoteListActivityFragment : Fragment(),NoteItemClickInterface {
         val factory = NoteItemListViewModel.ListFactory(this.activity.application)
         val viewModel = ViewModelProviders.of(this,factory).get(NoteItemListViewModel::class.java!!)
         subscribeUi(viewModel)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        unRegisterSlideDeleteListener()
-    }
-
-    private fun registerSlideDeleteListener() {
-        var intentFilter = IntentFilter()
-        intentFilter.addAction(INTENT_SLIDE_DELETE_ITEM_ACTION)
-        activity.registerReceiver(slideDeleteReceiver,intentFilter)
-    }
-
-    private fun unRegisterSlideDeleteListener(){
-        activity.unregisterReceiver(slideDeleteReceiver)
-
-    }
-    val slideDeleteReceiver = object:BroadcastReceiver(){
-        override fun onReceive(context: Context?, intent: Intent?) {
-            Log.d("yanlonglong","NoteListActivityFragment onResume onReceive")
-            if(intent!=null&& intent.action == INTENT_SLIDE_DELETE_ITEM_ACTION){
-                val msgId = R.string.isdeletenote
-                val positiveListener = DialogInterface.OnClickListener { dialog, _ ->
-                    if (intent.getIntExtra("delete_id", -1) != -1)
-                        (activity.application as BasicApplication).getRepository().deleteNoteById(intent.getIntExtra("delete_id", -1))
-                    dialog?.dismiss()
-                }
-                val nagativeLisener = DialogInterface.OnClickListener{ dialog, _ ->
-                    dialog?.dismiss()
-                }
-                if (context != null) {
-                    CommonUtils.showSimpleDialog(context,msgId,positiveListener,nagativeLisener)
-                }
-            }
-        }
-
+        //使用lifecycle 去注册observer，实现动态注册broadcastreceiver
+        lifecycle.addObserver(ActiveRegisterListener(activity as NoteListActivity))
     }
 
     private fun subscribeUi(viewModel: NoteItemListViewModel) {
-        viewModel.products.observe(this, Observer<List<NoteItem>> { noteEntities ->
+        viewModel.getProducts().observe(this, Observer<List<NoteItem>> { noteEntities ->
             if (noteEntities != null) {
                 mBinding.isLoading = false
                 mAdapter.setNoteList(noteEntities)
