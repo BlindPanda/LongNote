@@ -17,8 +17,9 @@ class NoteItemListViewModel(application: Application, private val mRepository: D
     /**
      * Expose the LiveData Products query so the UI can observe it.
      */
-    val products: LiveData<List<NoteItem>>
-        get() = mObservableNotes
+    fun getProducts(): LiveData<List<NoteItem>> {
+        return mObservableNotes
+    }
 
     init {
 
@@ -29,13 +30,9 @@ class NoteItemListViewModel(application: Application, private val mRepository: D
 
 
         // observe the changes of the products from the database and forward them
-        mObservableNotes.addSource<List<NoteItem>>(products, Observer<List<NoteItem>> { noteEntities ->
+        mObservableNotes.addSource<List<NoteItem>>(products, { noteEntities ->
             mObservableNotes.setValue(noteEntities)
         })
-    }
-
-    fun deleteNoteById(id:Int){
-        mRepository.deleteNoteById(id)
     }
 
 
